@@ -21,10 +21,10 @@
      font-family: 'Inter', sans-serif;
      background-color: var(--bg-body);
      color: var(--text-main);
-     height: 100vh;
+     min-height: 100vh;
      display: flex;
      flex-direction: column;
-     overflow: hidden;
+
  }
 
  /* --- NAVBAR --- */
@@ -105,7 +105,7 @@
  .main-wrapper {
      display: flex;
      flex: 1;
-     overflow: hidden;
+     overflow: visible;
  }
 
  /* --- SIDEBAR --- */
@@ -119,6 +119,29 @@
      flex-shrink: 0;
      overflow: hidden;
      box-shadow: .06rem 0 1.3rem 0 var(#5b6fad)
+ }
+
+ .sidebar-overlay {
+     position: fixed;
+     top: 60px;
+     /* Inicia debajo de la navbar */
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, 0.5);
+     /* Color negro con 50% de opacidad */
+     z-index: 9998;
+     /* Un nivel debajo de la sidebar (9999) */
+     display: none;
+     /* Oculto por defecto */
+     transition: opacity 0.3s ease;
+ }
+
+ .sidebar.mobile-open+.sidebar-overlay,
+ /* Si usas estructura contigua */
+ .sidebar-overlay.active {
+     display: block;
+     animation: fadeIn 0.3s ease;
  }
 
  .sidebar.collapsed {
@@ -167,8 +190,9 @@
  /* --- CONTENIDO --- */
  .content-body {
      flex: 1;
-     padding: 25px;
+     padding: 20px;
      overflow-y: auto;
+     width: 100%;
  }
 
  .action-bar {
@@ -397,6 +421,96 @@
      animation: pulse 1.5s infinite;
  }
 
+ @media (max-width: 1024px) {
+     .kpi-row {
+         grid-template-columns: repeat(2, 1fr);
+         /* 2 columnas en lugar de 4 */
+     }
+
+     .charts-row {
+         grid-template-columns: 1fr;
+         /* Gráficas una debajo de otra */
+     }
+
+     .sidebar {
+         position: fixed;
+         top: 60px;
+         /* Debajo de la navbar */
+         left: -250px;
+         /* Totalmente fuera de pantalla */
+         height: calc(100vh - 60px);
+         width: 250px;
+         z-index: 9999;
+         transition: all 0.3s ease;
+         visibility: hidden;
+         /* Escondida por defecto */
+     }
+
+     .sidebar.mobile-open {
+         left: 0;
+         visibility: visible;
+     }
+
+     .main-wrapper {
+         display: block;
+         /* Mejor flujo en móvil */
+     }
+
+     .sidebar.active {
+         left: 0;
+     }
+
+     .sidebar.collapsed {
+         left: -70px;
+     }
+ }
+
+ /* Móviles Pequeños */
+ @media (max-width: 768px) {
+     .navbar {
+         padding: 0 10px;
+     }
+
+     .page-title {
+         display: none;
+         /* Ocultamos el título largo en móviles */
+     }
+
+     .action-bar {
+         flex-direction: column;
+         /* Apilamos los filtros y botones */
+         align-items: stretch;
+         gap: 15px;
+     }
+
+     .action-group {
+         flex-wrap: wrap;
+         justify-content: space-between;
+     }
+
+     .kpi-row {
+         grid-template-columns: 1fr;
+         /* 1 columna */
+     }
+
+     .search-input {
+         width: 100%;
+         /* Buscador ocupa todo el ancho */
+     }
+
+     .table-header {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 10px;
+     }
+ }
+
+ /* Ajuste específico para el Stepper dentro de la tabla */
+ .stepper-row {
+     min-width: 280px;
+     /* Evita que se colapse demasiado */
+ }
+
  @keyframes pulse {
 
      0%,
@@ -408,3 +522,8 @@
          transform: scale(1.1);
      }
  }
+
+ @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
