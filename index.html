@@ -30,13 +30,15 @@
         </div>
     </nav>
 
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="main-wrapper">
         <aside class="sidebar" id="sidebar">
             <nav class="sidebar-nav">
                 <a href="#" class="sidebar-item active"><span
                         class="material-icons">dashboard</span><span>Dashboard</span></a>
-                <a href="https://ws3030.aarco.com.mx/aarco3030js/" class="sidebar-item"><span
-                        class="material-icons" style="color: white;">logout</span><span style="color: white;" >Cerrar Sesión</span></a>
+                <a href="https://ws3030.aarco.com.mx/aarco3030js/" class="sidebar-item"><span class="material-icons"
+                        style="color: white;">logout</span><span style="color: white;">Cerrar Sesión</span></a>
             </nav>
         </aside>
 
@@ -48,7 +50,7 @@
                         <option>Tiempo de actualización</option>
                         <option>15 minutos</option>
                         <option>30 minutos</option>
-                        <option>1 Hora</option>                        
+                        <option>1 Hora</option>
                     </select>
                 </div>
                 <div class="action-group">
@@ -58,7 +60,7 @@
                         <option>SATÉLITE</option>
                         <option>SAN JERÓNIMO</option>
                         <option>PUEBLA</option>
-                        <option>ORIZABA</option>                                                                                                
+                        <option>ORIZABA</option>
                     </select>
                     <button class="btn-excel"><span class="material-icons">download</span> Exportar</button>
                 </div>
@@ -75,7 +77,7 @@
                     <h2 style="color:var(--cancel)">10</h2>
                 </div>
                 <div class="kpi-card" style="background:var(--primary); color:white">
-                    <span style="color: var(--white);" >Primas MXN</span>
+                    <span style="color: var(--white);">Primas MXN</span>
                     <h2>$50,100</h2>
                 </div>
             </div>
@@ -134,7 +136,8 @@
                                         </div>
                                         <div class="step-divider"></div>
                                         <div class="step-block active">
-                                            <div class="step-icon"><span class="material-icons" >check_circle</span></div>
+                                            <div class="step-icon"><span class="material-icons">check_circle</span>
+                                            </div>
                                             <div class="step-text">Finalizado</div>
                                         </div>
                                     </div>
@@ -154,7 +157,8 @@
                                         </div>
                                         <div class="step-divider  "></div>
                                         <div class="step-block active ">
-                                            <div class="step-icon"><span class="material-icons">request_quote</span></div>
+                                            <div class="step-icon"><span class="material-icons">request_quote</span>
+                                            </div>
                                             <div class="step-text">Emitiendo</div>
                                         </div>
                                         <div class="step-divider"></div>
@@ -164,7 +168,8 @@
                                         </div>
                                         <div class="step-divider"></div>
                                         <div class="step-block active">
-                                            <div class="step-icon"><span class="material-icons" >check_circle</span></div>
+                                            <div class="step-icon"><span class="material-icons">check_circle</span>
+                                            </div>
                                             <div class="step-text">Finalizado</div>
                                         </div>
                                     </div>
@@ -195,7 +200,8 @@
                                         </div>
                                         <div class="step-divider"></div>
                                         <div class="step-block active">
-                                            <div class="step-icon"><span class="material-icons" >check_circle</span></div>
+                                            <div class="step-icon"><span class="material-icons">check_circle</span>
+                                            </div>
                                             <div class="step-text">Finalizado</div>
                                         </div>
                                     </div>
@@ -212,7 +218,42 @@
     <script>
         const toggleBtn = document.getElementById('toggleSidebar');
         const sidebar = document.getElementById('sidebar');
-        toggleBtn.addEventListener('click', () => { sidebar.classList.toggle('collapsed'); });
+        const overlay = document.getElementById('sidebarOverlay'); // Nuevo
+
+        function toggleMenu() {
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.toggle('mobile-open');
+                // Mostramos u ocultamos el sombreado
+                if (sidebar.classList.contains('mobile-open')) {
+                    overlay.classList.add('active');
+                } else {
+                    overlay.classList.remove('active');
+                }
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        }
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        // Cerrar si hacen clic en el sombreado
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+        });
+
+        // También cerrar si hacen clic fuera del menú en cualquier lado
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 &&
+                !sidebar.contains(e.target) &&
+                !toggleBtn.contains(e.target)) {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+            }
+        });
 
         // Gráfica de Barras
         new Chart(document.getElementById('barChart'), {
