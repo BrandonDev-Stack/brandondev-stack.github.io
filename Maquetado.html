@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Portfolio Monitor | Dashboard Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="./css/styles.css" />
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="menu-btn" id="toggleSidebar"><span class="material-icons">menu</span></div>
+            <div class="brand-logo"><img src="./img/logo-aarco.png" width="90" /></div>
+            <span class="page-title" style="font-weight: 600;">PANEL DE CONTROL - COTIZACIONES</span>
+        </div>
+
+        <div class="nav-right">
+            <div class="nav-action-icon" title="Cambiar Tema"><span class="material-icons">dark_mode</span></div>
+            <div class="nav-action-icon" title="Notificaciones"><span class="material-icons">notifications</span><span
+                    class="badge-dot"></span></div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-left: 5px; cursor: pointer;">
+                <span class="material-icons" style="color: var(--primary); font-size: 32px;">account_circle</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-item active"><span
+                        class="material-icons">dashboard</span><span>Dashboard</span></a>
+                <a href="https://ws3030.aarco.com.mx/aarco3030js/" class="sidebar-item"><span
+                        class="material-icons" style="color: white;">logout</span><span style="color: white;" >Cerrar Sesión</span></a>
+            </nav>
+        </aside>
+
+        <main class="content-body">
+            <div class="action-bar">
+                <div class="action-group">
+                    <button class="btn-update"><span class="material-icons">sync</span> Actualizar</button>
+                    <select class="select-custom">
+                        <option>Tiempo de actualización</option>
+                        <option>15 minutos</option>
+                        <option>30 minutos</option>
+                        <option>1 Hora</option>                        
+                    </select>
+                </div>
+                <div class="action-group">
+                    <select class="select-custom" style="min-width: 180px;">
+                        <option>Selecciona una oficina</option>
+                        <option>MAYORAZGO</option>
+                        <option>SATÉLITE</option>
+                        <option>SAN JERÓNIMO</option>
+                        <option>PUEBLA</option>
+                        <option>ORIZABA</option>                                                                                                
+                    </select>
+                    <button class="btn-excel"><span class="material-icons">download</span> Exportar</button>
+                </div>
+            </div>
+
+            <div class="kpi-row">
+                <div class="kpi-card"><span>Cotizaciones</span>
+                    <h2>1,240</h2>
+                </div>
+                <div class="kpi-card"><span>Emisiones</span>
+                    <h2 style="color:var(--success)">50</h2>
+                </div>
+                <div class="kpi-card"><span>Canceladas</span>
+                    <h2 style="color:var(--cancel)">10</h2>
+                </div>
+                <div class="kpi-card" style="background:var(--primary); color:white">
+                    <span style="color: var(--white);" >Primas MXN</span>
+                    <h2>$50,100</h2>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-card">
+                    <h4>Tendencia de cotización ultimos 60 días</h4>
+                    <div style="height: 230px;"><canvas id="barChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h4>Ramos Cotizados</h4>
+                    <div style="height: 230px;"><canvas id="pieChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <h3 style="font-size: 0.95rem; font-weight: 700;">Detalle de Cotizaciones</h3>
+                    <input type="text" class="search-input" placeholder="Buscar...">
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="policy-table">
+                        <thead>
+                            <tr>
+                                <th>Folio Cotización</th>
+                                <th>Cliente</th>
+                                <th>Agente</th>
+                                <th>SubRamo</th>
+                                <th>Compañía</th>
+                                <th>Estatus</th>
+                                <th>Fecha Actualización</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>3303790</b></td>
+                                <td>VALERIA IBANEZ ENRIQUEZ</td>
+                                <td>RAGNAR MACIAS MEJIA</td>
+                                <td>AUTOS</td>
+                                <td>ZURICH</td>
+                                <td>
+                                    <div class="stepper-row">
+                                        <div class="step-block completed">
+                                            <div class="step-icon"><span class="material-icons">check</span></div>
+                                            <div class="step-text">Cotizado</div>
+                                        </div>
+                                        <div class="step-divider divider-completed"></div>
+                                        <div class="step-block completed">
+                                            <div class="step-icon"><span class="material-icons">check</span></div>
+                                            <div class="step-text">Emitiendo</div>
+                                        </div>
+                                        <div class="step-divider divider-completed"></div>
+                                        <div class="step-block active">
+                                            <div class="step-icon"><span class="material-icons">description</span></div>
+                                            <div class="step-text">Pago de póliza</div>
+                                        </div>
+                                        <div class="step-divider"></div>
+                                        <div class="step-block active">
+                                            <div class="step-icon"><span class="material-icons" >check_circle</span></div>
+                                            <div class="step-text">Finalizado</div>
+                                        </div>
+                                    </div>
+                                <td>09/Abr/2026 11:30 AM</td>
+                            </tr>
+                            <tr>
+                                <td><b>3303857</b></td>
+                                <td>Sergio Aparicio</td>
+                                <td>EDGAR DARIO JACOME PICHARDO</td>
+                                <td>AUTOS</td>
+                                <td>Sin Compañia</td>
+                                <td>
+                                    <div class="stepper-row">
+                                        <div class="step-block completed">
+                                            <div class="step-icon"><span class="material-icons">check</span></div>
+                                            <div class="step-text">Cotizado</div>
+                                        </div>
+                                        <div class="step-divider  "></div>
+                                        <div class="step-block active ">
+                                            <div class="step-icon"><span class="material-icons">request_quote</span></div>
+                                            <div class="step-text">Emitiendo</div>
+                                        </div>
+                                        <div class="step-divider"></div>
+                                        <div class="step-block active">
+                                            <div class="step-icon"><span class="material-icons">description</span></div>
+                                            <div class="step-text">Pago de póliza</div>
+                                        </div>
+                                        <div class="step-divider"></div>
+                                        <div class="step-block active">
+                                            <div class="step-icon"><span class="material-icons" >check_circle</span></div>
+                                            <div class="step-text">Finalizado</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>09/Abr/2026 10:15 AM</td>
+                            </tr>
+                            <tr>
+                                <td><b>3303949</b></td>
+                                <td>GUSTAVO ALEJANDRO CUEVAS</td>
+                                <td>OMAR ALEJANDRO VEGA GOMEZ</td>
+                                <td>AUTOS</td>
+                                <td>Sin Compañia</td>
+                                <td>
+                                    <div class="stepper-row">
+                                        <div class="step-block completed">
+                                            <div class="step-icon"><span class="material-icons">check</span></div>
+                                            <div class="step-text">Cotizado</div>
+                                        </div>
+                                        <div class="step-divider divider-completed"></div>
+                                        <div class="step-block completed ">
+                                            <div class="step-icon"><span class="material-icons">check</span></div>
+                                            <div class="step-text">Emitiendo</div>
+                                        </div>
+                                        <div class="step-divider divider-completed"></div>
+                                        <div class="step-block completed">
+                                            <div class="step-icon"><span class="material-icons">check</span></div>
+                                            <div class="step-text">Pago de póliza</div>
+                                        </div>
+                                        <div class="step-divider"></div>
+                                        <div class="step-block active">
+                                            <div class="step-icon"><span class="material-icons" >check_circle</span></div>
+                                            <div class="step-text">Finalizado</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>09/Abr/2026 10:15 AM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+        toggleBtn.addEventListener('click', () => { sidebar.classList.toggle('collapsed'); });
+
+        // Gráfica de Barras
+        new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Cotizaciones', 'Emisiones', 'Proceso Pago', 'Rechazadas', 'Canceladas'],
+                datasets: [{ data: [1240, 150, 120, 140, 140], backgroundColor: '#243876', borderRadius: 4 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        // Gráfica de Dona
+        new Chart(document.getElementById('pieChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Autos', 'GMM', 'Vida', 'Hogar'],
+                datasets: [{ data: [50, 25, 15, 18], backgroundColor: ['#ff6666', '#0A9ECB', '#10b981', '#e62a6e'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+        });
+    </script>
+</body>
+
+</html>
