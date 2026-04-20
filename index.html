@@ -88,10 +88,10 @@
                 </div>
                 <div class="chart-card">
                     <h4>Ramos Cotizados</h4>
-                    <div style="height: 230px;"><canvas id="pieChart"></canvas></div>
+                    <div style="height: 230px;"><canvas id="mainPieChart"></canvas></div>
                 </div>
                 <div class="chart-card">
-                    <h4>Resumen por tipo de documento (Vigentes y Terminados)</h4>
+                    <h4>Resumen de Documentos Emitidos </h4>
                     <div style="height: 230px;"><canvas id="pieChartdetalledocumento"></canvas></div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                 </div>
                 <div class="chart-card">
                     <h4>Resumen por estatus (Cobranza)</h4>
-                    <div style="height: 230px;"><canvas id="pieChartcobranza"></canvas></div>
+                    <div style="height: 230px;"><canvas id="lineChartcobranza"></canvas></div>
                 </div>
                 <div class="chart-card">
                     <h4>Cobranza Efectuada</h4>
@@ -266,19 +266,53 @@
             type: 'bar',
             data: {
                 labels: ['Cotizaciones', 'En Trámite', 'Entregados', 'Ganados', 'Rechazados', 'No Ganados'],
-                datasets: [{ data: [350, 5, 50, 10, 8, 10], backgroundColor: '#243876', borderRadius: 4 }]
+                datasets: [{ data: [350, 5, 50, 10, 8, 10], backgroundColor: ['#243876', '#ffc107', '#0d6efd', '#198754', '#dc3545', '#dc3545'], borderRadius: 4 }]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
         });
 
-        // Gráfica de Dona ramos
-        new Chart(document.getElementById('pieChart'), {
-            type: 'doughnut',
+        // Gráfica de pastel ramos
+        new Chart(document.getElementById('mainPieChart'), {
+            type: 'pie',
             data: {
-                labels: ['Autos', 'GMM', 'Vida', 'Hogar'],
-                datasets: [{ data: [50, 25, 15, 18], backgroundColor: ['#ff6666', '#0A9ECB', '#10b981', '#e62a6e'], borderWidth: 0 }]
+                labels: ['Autos', 'Gastos Médicos', 'Vida', 'Hogar'],
+                datasets: [{
+                    data: [60, 20, 10, 10],
+                    backgroundColor: [
+                        '#f66', 
+                        '#0A9ECB', 
+                        '#96AD27', 
+                        '#e62a6e'  
+                    ],
+                    hoverOffset: 15, 
+                    borderWidth: 2,
+                    borderColor: '#ffffff' 
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right', 
+                        labels: {
+                            boxWidth: 15,
+                            padding: 20,
+                            font: {
+                                size: 12,
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {                            
+                            label: function (context) {
+                                return ` ${context.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
+            }
         });
 
         //Grafica resumen documento
@@ -286,29 +320,71 @@
             type: 'doughnut',
             data: {
                 labels: ['Vigentes y Terminadas', 'Canceladas', 'Fianzas'],
-                datasets: [{ data: [244, 27, 2], backgroundColor: ['#ff6666', '#0A9ECB', '#FFEE4A'], borderWidth: 0 }]
+                datasets: [{ data: [244, 27, 2], backgroundColor: ['#198754', '#dc3545', '#0d6efd'], borderWidth: 0 }]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
         });
 
         //Grafica tipo documento
         new Chart(document.getElementById('pieChartdocumento'), {
-            type: 'doughnut',
+            type: 'bar',
             data: {
-                labels: ['Pólizas Iniciales', 'Renovaciones', 'Endosos', 'Otros Trámites'],
-                datasets: [{ data: [34, 158, 52, 0], backgroundColor: ['#ff6666', '#0A9ECB', '#FFEE4A', '#e62a6e'], borderWidth: 0 }]
+                labels: ['Pólizas Iniciales', 'Renovaciones', 'Endosos', 'Otros Tramites'],
+                datasets: [{
+                    data: [34, 158, 52, 0],
+                    backgroundColor: ['#198754', '#0d6efd', '#ffc93c', '#393e46'],
+                    borderRadius: 4
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
         });
 
         //Grafica cobranza estatus
-        new Chart(document.getElementById('pieChartcobranza'), {
-            type: 'doughnut',
+        new Chart(document.getElementById('lineChartcobranza'), {
+            type: 'line',
             data: {
                 labels: ['Pendiente', 'Vencida', 'Efectuada', 'Cancelada'],
-                datasets: [{ data: [225, 134, 557, 218], backgroundColor: ['#ff6666', '#0A9ECB', '#FFEE4A', '#e62a6e'], borderWidth: 0 }]
+                datasets: [{
+                    label: 'Cobranza',
+                    data: [225, 134, 557, 218],
+                    fill: true,
+                    backgroundColor: 'rgba(36, 56, 118, 0.1)',
+                    borderColor: '#243876',
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#243876'
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: true,
+                            color: '#f0f0f0'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
         });
 
         //Tacometro cobranza efectuada
