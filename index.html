@@ -68,17 +68,16 @@
 
             <div class="kpi-row">
                 <div class="kpi-card"><span>Cotizaciones</span>
-                    <h2>1,240</h2>
+                    <h2>350</h2>
                 </div>
-                <div class="kpi-card"><span>Emisiones</span>
-                    <h2 style="color:var(--success)">50</h2>
+                <div class="kpi-card"><span>En Trámite</span>
+                    <h2>5</h2>
+                </div>
+                <div class="kpi-card"><span>Ganados</span>
+                    <h2 style="color:var(--success)">10</h2>
                 </div>
                 <div class="kpi-card"><span>Canceladas</span>
-                    <h2 style="color:var(--cancel)">10</h2>
-                </div>
-                <div class="kpi-card" style="background:var(--primary); color:white">
-                    <span style="color: var(--white);">Primas MXN</span>
-                    <h2>$50,100</h2>
+                    <h2 style="color:var(--cancel)">18</h2>
                 </div>
             </div>
 
@@ -90,6 +89,31 @@
                 <div class="chart-card">
                     <h4>Ramos Cotizados</h4>
                     <div style="height: 230px;"><canvas id="pieChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h4>Resumen por tipo de documento (Vigentes y Terminados)</h4>
+                    <div style="height: 230px;"><canvas id="pieChartdetalledocumento"></canvas></div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-card">
+                    <h4>Resumen por tipo de documento (Vigentes y Terminados)</h4>
+                    <div style="height: 230px;"><canvas id="pieChartdocumento"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h4>Resumen por estatus (Cobranza)</h4>
+                    <div style="height: 230px;"><canvas id="pieChartcobranza"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h4>Cobranza Efectuada</h4>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="gaugeChart"></canvas>
+                        <div
+                            style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                            <span style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">100%</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -134,12 +158,6 @@
                                             <div class="step-icon"><span class="material-icons">description</span></div>
                                             <div class="step-text">Pago de póliza</div>
                                         </div>
-                                        <div class="step-divider"></div>
-                                        <div class="step-block active">
-                                            <div class="step-icon"><span class="material-icons">check_circle</span>
-                                            </div>
-                                            <div class="step-text">Finalizado</div>
-                                        </div>
                                     </div>
                                 <td>09/Abr/2026 11:30 AM</td>
                             </tr>
@@ -166,12 +184,6 @@
                                             <div class="step-icon"><span class="material-icons">description</span></div>
                                             <div class="step-text">Pago de póliza</div>
                                         </div>
-                                        <div class="step-divider"></div>
-                                        <div class="step-block active">
-                                            <div class="step-icon"><span class="material-icons">check_circle</span>
-                                            </div>
-                                            <div class="step-text">Finalizado</div>
-                                        </div>
                                     </div>
                                 </td>
                                 <td>09/Abr/2026 10:15 AM</td>
@@ -197,12 +209,6 @@
                                         <div class="step-block completed">
                                             <div class="step-icon"><span class="material-icons">check</span></div>
                                             <div class="step-text">Pago de póliza</div>
-                                        </div>
-                                        <div class="step-divider"></div>
-                                        <div class="step-block active">
-                                            <div class="step-icon"><span class="material-icons">check_circle</span>
-                                            </div>
-                                            <div class="step-text">Finalizado</div>
                                         </div>
                                     </div>
                                 </td>
@@ -255,17 +261,17 @@
             }
         });
 
-        // Gráfica de Barras
+        // Gráfica de Barras estatus cotizaciones
         new Chart(document.getElementById('barChart'), {
             type: 'bar',
             data: {
-                labels: ['Cotizaciones', 'Emisiones', 'Proceso Pago', 'Rechazadas', 'Canceladas'],
-                datasets: [{ data: [1240, 150, 120, 140, 140], backgroundColor: '#243876', borderRadius: 4 }]
+                labels: ['Cotizaciones', 'En Trámite', 'Entregados', 'Ganados', 'Rechazados', 'No Ganados'],
+                datasets: [{ data: [350, 5, 50, 10, 8, 10], backgroundColor: '#243876', borderRadius: 4 }]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
         });
 
-        // Gráfica de Dona
+        // Gráfica de Dona ramos
         new Chart(document.getElementById('pieChart'), {
             type: 'doughnut',
             data: {
@@ -273,6 +279,61 @@
                 datasets: [{ data: [50, 25, 15, 18], backgroundColor: ['#ff6666', '#0A9ECB', '#10b981', '#e62a6e'], borderWidth: 0 }]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+        });
+
+        //Grafica resumen documento
+        new Chart(document.getElementById('pieChartdetalledocumento'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Vigentes y Terminadas', 'Canceladas', 'Fianzas'],
+                datasets: [{ data: [244, 27, 2], backgroundColor: ['#ff6666', '#0A9ECB', '#FFEE4A'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+        });
+
+        //Grafica tipo documento
+        new Chart(document.getElementById('pieChartdocumento'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Pólizas Iniciales', 'Renovaciones', 'Endosos', 'Otros Trámites'],
+                datasets: [{ data: [34, 158, 52, 0], backgroundColor: ['#ff6666', '#0A9ECB', '#FFEE4A', '#e62a6e'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+        });
+
+        //Grafica cobranza estatus
+        new Chart(document.getElementById('pieChartcobranza'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Pendiente', 'Vencida', 'Efectuada', 'Cancelada'],
+                datasets: [{ data: [225, 134, 557, 218], backgroundColor: ['#ff6666', '#0A9ECB', '#FFEE4A', '#e62a6e'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+        });
+
+        //Tacometro cobranza efectuada
+        new Chart(document.getElementById('gaugeChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Progreso', 'Restante'],
+                datasets: [{
+                    data: [100, 0],
+                    backgroundColor: ['#7c73e6', '#e2e8f0'],
+                    borderWidth: 0,
+                    needleValue: 100
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                rotation: -90,
+                circumference: 180,
+                cutout: '80%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                }
+            }
         });
     </script>
 </body>
